@@ -25,6 +25,7 @@ config/overrides.env.example   在官方 .env.example 基础上的改动项（�
 scripts/install.sh             新机器安装：固定版本、自动生成密钥、启动服务
 scripts/backup.sh              备份数据库、上传文档与 .env
 scripts/restore.sh             在新机器上恢复备份（迁移用）
+docs/index.html                对外静态页（GitHub Pages），含问答挂件接入位
 ```
 
 ## 新机器安装
@@ -84,6 +85,30 @@ git clone https://github.com/BigmaRichard/weknora.git ~/weknora-deploy && ~/wekn
 
 迁移前后使用相同的 WeKnora 版本。升级 WeKnora 后，同步修改 `config/overrides.env.example` 中的 `WEKNORA_VERSION`。
 
+## 对外静态页（GitHub Pages）
+
+`docs/index.html` 是面向访客的公开页面，由 GitHub Pages 托管；问答能力由云服务器上的 WeKnora 通过「网页嵌入」挂件提供。GitHub Pages 只托管静态文件，不能运行 WeKnora 本身。
+
+### 开启 Pages
+
+仓库 Settings → Pages → Build and deployment：Source 选 Deploy from a branch，Branch 选 `main`、目录选 `/docs`，保存。几分钟后页面地址为 https://bigmarichard.github.io/weknora/ 。此后修改 `docs/` 下的文件并推送即自动更新。
+
+### 接入问答挂件（服务器与 HTTPS 域名就绪后）
+
+1. WeKnora 管理端「设置 → 网页嵌入」新建渠道，绑定快速问答类智能体。
+2. 允许嵌入的域名填写页面来源 `https://bigmarichard.github.io`（填宿主页面的域名，不是 WeKnora 自己的域名）。
+3. 设置限流：单 IP 每分钟上限（默认 30）与渠道每日上限（默认 10000），按预期访问量调整。
+4. 复制生成的 `<script>` 代码，替换 `docs/index.html` 末尾注释中的示例，提交推送。挂件加载后页面会自动隐藏「尚未开通」提示。
+5. 从 GitHub Pages 地址实际打开页面验证，不能只在管理端预览。
+
+### 限制与注意
+
+- WeKnora 需通过 HTTPS 域名访问，否则浏览器会拦截 https 页面发起的请求。
+- GitHub Pages 没有后端，只能使用静态 token 方式，token 对访客可见。渠道只绑定公开资料的知识库；依靠域名白名单与限流控制调用量，因为每次提问会产生模型 API 费用。
+- 对话模型建议使用 API（如 DeepSeek），本机 Ollama 无法提供全天在线与并发。
+- GitHub Pages 限制：站点不超过 1 GB，月流量软限制 100 GB；不得用作以交易或收费软件服务为主的商业站点。
+- github.io 在中国内地访问不稳定，主要面向国内访客时可把静态页放在云服务器上并使用备案域名。
+
 ## 安全要点
 
 - `.env` 含 JWT_SECRET、SYSTEM_AES_KEY 与数据库密码，不提交到仓库（官方 `.gitignore` 与本仓库 `.gitignore` 均已排除）。SYSTEM_AES_KEY 需长期保管，丢失后已加密保存的模型 API Key 无法解密。
@@ -94,3 +119,5 @@ git clone https://github.com/BigmaRichard/weknora.git ~/weknora-deploy && ~/wekn
 
 - [ ] 配置重排模型，使「智能推理」可以检索知识库
 - [ ] Ollama 上下文长度调至 32k
+- [ ] 开启 GitHub Pages（Settings → Pages，main 分支 /docs 目录）
+- [ ] 云服务器与 HTTPS 域名就绪后，在 `docs/index.html` 接入问答挂件

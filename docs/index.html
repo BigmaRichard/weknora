@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MW 知识库问答</title>
+  <meta name="description" content="MW 层析填料公开资料的检索与问答。回答基于已发布的产品资料与技术文档生成，并附原文引用。">
+  <meta name="color-scheme" content="light dark">
+  <style>
+    :root {
+      --bg: #f6f7f5;
+      --surface: #ffffff;
+      --text: #1d2a24;
+      --muted: #5b6b64;
+      --line: #dfe5e1;
+      --accent: #1f7a5c;
+      --accent-soft: #e6f2ec;
+      --notice-bg: #fff7e6;
+      --notice-line: #f0d9a8;
+      --notice-text: #6b4e0f;
+      --radius: 12px;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #101513;
+        --surface: #182019;
+        --text: #e6ece8;
+        --muted: #9aa8a1;
+        --line: #2a352f;
+        --accent: #5fc39a;
+        --accent-soft: #1d2f27;
+        --notice-bg: #2a2416;
+        --notice-line: #5a4a24;
+        --notice-text: #e8cf8f;
+      }
+    }
+    :root[data-theme="dark"] {
+      --bg: #101513;
+      --surface: #182019;
+      --text: #e6ece8;
+      --muted: #9aa8a1;
+      --line: #2a352f;
+      --accent: #5fc39a;
+      --accent-soft: #1d2f27;
+      --notice-bg: #2a2416;
+      --notice-line: #5a4a24;
+      --notice-text: #e8cf8f;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Noto Sans CJK SC", "Segoe UI", Roboto, sans-serif;
+      font-size: 16px;
+      line-height: 1.7;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { color: var(--accent); }
+
+    .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px; }
+
+    header {
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 12px;
+      height: 60px;
+    }
+    .brand .mark {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 36px; height: 36px; border-radius: 9px;
+      background: var(--accent); color: #fff;
+      font-weight: 700; font-size: 14px; letter-spacing: .5px;
+    }
+    .brand .name { font-weight: 600; }
+    .brand .sub { color: var(--muted); font-size: 14px; }
+
+    main.wrap { padding-top: 40px; padding-bottom: 56px; }
+    h1 { font-size: 28px; line-height: 1.35; margin: 0 0 12px; letter-spacing: -.01em; }
+    .lead { color: var(--muted); margin: 0 0 28px; font-size: 17px; }
+
+    .notice {
+      display: flex; gap: 12px; align-items: flex-start;
+      background: var(--notice-bg); border: 1px solid var(--notice-line); color: var(--notice-text);
+      border-radius: var(--radius); padding: 14px 16px; margin: 0 0 32px; font-size: 15px;
+    }
+    .notice[hidden] { display: none; }
+    .notice .dot {
+      flex: none; width: 10px; height: 10px; border-radius: 50%; margin-top: 8px;
+      background: currentColor; opacity: .7;
+    }
+
+    h2 { font-size: 18px; margin: 32px 0 12px; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    @media (max-width: 640px) { .grid { grid-template-columns: 1fr; } h1 { font-size: 24px; } }
+    .card {
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 16px;
+    }
+    .card h3 { font-size: 15px; margin: 0 0 6px; }
+    .card p { margin: 0; color: var(--muted); font-size: 14px; line-height: 1.6; }
+
+    ol { padding-left: 22px; margin: 0; }
+    ol li { margin: 6px 0; }
+
+    .fine { color: var(--muted); font-size: 14px; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      color: var(--muted); font-size: 13px;
+      padding: 20px 0 28px;
+    }
+    footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 20px; justify-content: space-between; }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="wrap brand">
+      <span class="mark" aria-hidden="true">MW</span>
+      <span class="name">MW 知识库问答</span>
+      <span class="sub">层析填料公开资料</span>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <h1>MW 层析填料资料问答</h1>
+    <p class="lead">对 MW 已发布的产品资料与技术文档进行检索与问答。回答由模型根据知识库内容生成，并附原文引用，便于核对出处。</p>
+
+    <div class="notice" id="widget-notice" role="status">
+      <span class="dot" aria-hidden="true"></span>
+      <div>问答助手尚未开通。开通后，页面右下角会出现对话按钮，点击即可提问。</div>
+    </div>
+
+    <h2>可查询的资料类型</h2>
+    <p class="fine">以知识库实际收录内容为准。</p>
+    <div class="grid">
+      <article class="card">
+        <h3>产品资料</h3>
+        <p>层析填料产品的规格参数、型号说明与选型资料。</p>
+      </article>
+      <article class="card">
+        <h3>技术文档</h3>
+        <p>使用说明、操作建议与相关技术说明文件。</p>
+      </article>
+      <article class="card">
+        <h3>常见问题</h3>
+        <p>使用过程中的常见问题及对应说明。</p>
+      </article>
+    </div>
+
+    <h2>使用说明</h2>
+    <ol>
+      <li>点击页面右下角的对话按钮，输入问题后发送。</li>
+      <li>回答末尾附有引用来源，可点击查看对应原文片段。</li>
+      <li>回答由模型生成，可能存在偏差；涉及正式技术确认或商务事项，请联系 MW 技术团队。</li>
+    </ol>
+
+    <h2>关于本服务</h2>
+    <p class="fine">本页面基于开源知识库框架 WeKnora 提供检索与问答能力。知识库仅收录可公开的资料；提问内容会发送至 MW 的知识库服务用于生成回答，请勿在提问中填写个人信息。</p>
+  </main>
+
+  <footer>
+    <div class="wrap">
+      <span>© <span id="year"></span> MW</span>
+      <span>检索与问答能力由 WeKnora 提供</span>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    // 挂件脚本加载后会定义 window.WeKnora；检测到即隐藏「尚未开通」提示。
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        if (window.WeKnora) { document.getElementById('widget-notice').hidden = true; }
+      }, 1500);
+    });
+  </script>
+
+  <!--
+    ===== WeKnora 问答挂件接入位 =====
+    服务器与 HTTPS 域名就绪后：
+    1. WeKnora 管理端「设置 → 网页嵌入」新建渠道，绑定快速问答类智能体；
+       允许嵌入的域名填写本页面的来源：https://bigmarichard.github.io
+       并设置单 IP 每分钟、渠道每日的请求上限。
+    2. 复制生成的 script 代码，替换下面这段注释中的示例，然后提交推送。
+    3. 静态 token 对访客可见，仅用于公开资料；不要把管理端 API Key 写入本页面。
+
+    <script
+      src="https://<你的WeKnora域名>/weknora-widget.js"
+      data-channel="<渠道UUID>"
+      data-token="<em_开头的publish_token>"
+      data-position="bottom-right"
+      data-primary-color="#1f7a5c"
+      data-title="MW 知识助手"
+    ></script>
+    ===== 接入位结束 =====
+  -->
+</body>
+</html>
